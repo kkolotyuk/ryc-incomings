@@ -92,8 +92,9 @@ def extract_body(raw_message: bytes) -> str:
 
     if html_body:
         converter = html2text.HTML2Text()
-        converter.ignore_links = True
+        converter.ignore_links = False
         converter.ignore_images = True
+        converter.body_width = 0  # no line wrapping so links stay intact
         return converter.handle(html_body).strip()
     return (text_body or "").strip()
 

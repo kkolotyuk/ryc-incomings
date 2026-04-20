@@ -27,8 +27,11 @@ def send_message(text: str) -> None:
 
 
 def format_summary(email_date: str, subject: str, analysis: dict) -> str:
+    child = analysis.get("child")
+    child_str = f" — {child}" if child else ""
+
     lines = [
-        f"*Письмо от школы*",
+        f"*Письмо от школы{child_str}*",
         f"",
         f"*Дата:* {email_date}",
         f"*Тема:* {subject}",
