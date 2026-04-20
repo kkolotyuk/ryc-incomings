@@ -1,0 +1,13 @@
+services:
+  app:
+    build: .
+    env_file:
+      - path: .env
+        required: false
+    restart: unless-stopped
+
+  setup:
+    build: .
+    command: python setup_oauth.py
+    stdin_open: true
+    tty: true
