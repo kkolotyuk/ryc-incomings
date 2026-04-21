@@ -4,6 +4,7 @@ import os
 from apscheduler.schedulers.blocking import BlockingScheduler
 from dotenv import load_dotenv
 
+import telegram_client
 from processor import EmailProcessor
 
 load_dotenv()
@@ -38,7 +39,14 @@ def main() -> None:
     logger.info("Starting scheduler, interval: %ds", interval)
 
     def job():
-        EmailProcessor().run()
+        try:
+            EmailProcessor().run()
+        except Exception as e:
+            logger.exception("Processor failed")
+            try:
+                telegram_client.send_message(f"*[RyC bot] Критическая ошибка*\n\n{e}")
+            except Exception:
+                logger.exception("Failed to send error notification to Telegram")
 
     job()
 

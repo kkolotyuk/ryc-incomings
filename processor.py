@@ -44,5 +44,12 @@ class EmailProcessor:
                 if self.mark_as_processed:
                     gmail_client.mark_as_processed(self._service, email.message_id, self._processed_label_id)
                 logger.info("Done: %s", email.subject)
-            except Exception:
+            except Exception as e:
                 logger.exception("Failed to process email: %s", email.subject)
+                self._notify_error(f"Ошибка при обработке письма '{email.subject}':\n{e}")
+
+    def _notify_error(self, message: str) -> None:
+        try:
+            telegram_client.send_message(f"*[RyC bot] Ошибка*\n\n{message}")
+        except Exception:
+            logger.exception("Failed to send error notification to Telegram")
