@@ -28,10 +28,8 @@ class EmailProcessor:
         emails = gmail_client.fetch_unprocessed_emails(
             self._service, self._source_label_id, self._processed_label_id,
             max_age_days=MAX_EMAIL_AGE_DAYS,
+            limit=self.max_emails,
         )
-
-        if self.max_emails is not None:
-            emails = emails[: self.max_emails]
 
         logger.info("Found %d email(s) to process", len(emails))
 

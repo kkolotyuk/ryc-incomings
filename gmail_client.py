@@ -100,14 +100,16 @@ def extract_body(raw_message: bytes) -> str:
 
 
 def fetch_unprocessed_emails(
-    service, source_label_id: str, processed_label_id: str, max_age_days: int = 30
+    service, source_label_id: str, processed_label_id: str, max_age_days: int = 30, limit: int | None = None,
 ) -> list[EmailMessage]:
-    results = service.users().messages().list(
+    params = dict(
         userId="me",
         labelIds=[source_label_id],
         q=f"newer_than:{max_age_days}d",
-        maxResults=50,
-    ).execute()
+    )
+    if limit is not None:
+        params["maxResults"] = limit
+    results = service.users().messages().list(**params).execute()
 
     messages = results.get("messages", [])
     emails = []

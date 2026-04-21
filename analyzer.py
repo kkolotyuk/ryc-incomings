@@ -8,7 +8,7 @@ from gmail_client import EmailMessage
 
 logger = logging.getLogger(__name__)
 
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"), timeout=30)
 
 SYSTEM_PROMPT = """Ты помощник, который анализирует письма испанской школы для русскоязычных родителей.
 
