@@ -15,6 +15,7 @@ logger = logging.getLogger(__name__)
 SCOPES = [
     "https://www.googleapis.com/auth/gmail.readonly",
     "https://www.googleapis.com/auth/gmail.labels",
+    "https://www.googleapis.com/auth/gmail.modify",
 ]
 PROCESSED_LABEL_SUFFIX = "/processed"
 
@@ -111,7 +112,7 @@ def fetch_unprocessed_emails(
         params["maxResults"] = limit
     results = service.users().messages().list(**params).execute()
 
-    messages = results.get("messages", [])
+    messages = list(reversed(results.get("messages", [])))
     emails = []
 
     for msg_ref in messages:
