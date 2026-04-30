@@ -7,6 +7,19 @@ logger = logging.getLogger(__name__)
 
 TELEGRAM_API = "https://api.telegram.org/bot{token}/sendMessage"
 
+_MARKDOWN_SPECIAL = str.maketrans({
+    "_": "\\_",
+    "*": "\\*",
+    "[": "\\[",
+    "]": "\\]",
+    "`": "\\`",
+})
+
+
+def escape_markdown(text: str) -> str:
+    """Escape characters that break Telegram Markdown v1 parser."""
+    return str(text).translate(_MARKDOWN_SPECIAL)
+
 
 def send_message(text: str) -> None:
     token = os.environ["TELEGRAM_BOT_TOKEN"]

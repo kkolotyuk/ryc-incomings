@@ -48,6 +48,7 @@ class EmailProcessor:
 
     def _notify_error(self, message: str) -> None:
         try:
-            telegram_client.send_message(f"*[RyC bot] Ошибка*\n\n{message}")
+            safe = telegram_client.escape_markdown(message)
+            telegram_client.send_message(f"*\\[RyC bot\\] Ошибка*\n\n{safe}")
         except Exception:
             logger.exception("Failed to send error notification to Telegram")

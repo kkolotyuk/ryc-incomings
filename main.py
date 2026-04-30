@@ -44,7 +44,8 @@ def main() -> None:
         except Exception as e:
             logger.exception("Processor failed")
             try:
-                telegram_client.send_message(f"*[RyC bot] Критическая ошибка*\n\n{e}")
+                safe = telegram_client.escape_markdown(e)
+                telegram_client.send_message(f"*\\[RyC bot\\] Критическая ошибка*\n\n{safe}")
             except Exception:
                 logger.exception("Failed to send error notification to Telegram")
 
