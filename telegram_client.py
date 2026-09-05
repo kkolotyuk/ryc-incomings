@@ -41,32 +41,32 @@ def send_message(text: str) -> None:
 
 def format_summary(email_date: str, subject: str, analysis: dict) -> str:
     child = analysis.get("child")
-    child_str = f" — {child}" if child else ""
+    child_str = f" — {escape_markdown(child)}" if child else ""
 
     lines = [
         f"*Письмо от школы{child_str}*",
         f"",
-        f"*Дата:* {email_date}",
-        f"*Тема:* {subject}",
+        f"*Дата:* {escape_markdown(email_date)}",
+        f"*Тема:* {escape_markdown(subject)}",
         f"",
         f"*О чём:*",
-        analysis.get("summary", "—"),
+        escape_markdown(analysis.get("summary", "—")),
     ]
 
     actions = analysis.get("actions") or []
     if actions:
         lines += ["", "*Что нужно сделать:*"]
         for action in actions:
-            lines.append(f"• {action}")
+            lines.append(f"• {escape_markdown(action)}")
 
     deadlines = analysis.get("deadlines") or []
     if deadlines:
         lines += ["", "*Дедлайны:*"]
         for deadline in deadlines:
-            lines.append(f"• {deadline}")
+            lines.append(f"• {escape_markdown(deadline)}")
 
     money = analysis.get("money")
     if money:
-        lines += ["", f"*Деньги:* {money}"]
+        lines += ["", f"*Деньги:* {escape_markdown(money)}"]
 
     return "\n".join(lines)
